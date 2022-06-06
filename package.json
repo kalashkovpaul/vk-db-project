@@ -1,0 +1,25 @@
+{
+  "dependencies": {
+    "pg-promise": "^10.11.1"
+  },
+  "name": "vk-db-project",
+  "description": "DB Project for VK Education",
+  "version": "1.0.0",
+  "main": "index.js",
+  "devDependencies": {
+    "pg-promise": "^10.11.1"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/kalashkovpaul/vk-db-project.git"
+  },
+  "author": "Paul Kalashkov",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/kalashkovpaul/vk-db-project/issues"
+  },
+  "homepage": "https://github.com/kalashkovpaul/vk-db-project#readme"
+}
