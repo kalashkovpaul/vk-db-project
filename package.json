@@ -7,7 +7,9 @@
   "version": "1.0.0",
   "main": "index.js",
   "devDependencies": {
-    "pg-promise": "^10.11.1"
+    "fastify": "^3.25.3",
+    "pg-promise": "^10.11.1",
+    "typescript": "^4.7.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
