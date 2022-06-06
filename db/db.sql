@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS votes CASCADE;
 DROP TABLE IF EXISTS posts CASCADE;
 
 CREATE TABLE forums (
-    ID      SERIAL,
+    id      SERIAL,
     title   TEXT            NOT NULL,
     "user"  CITEXT          NOT NULL,
     slug    CITEXT          PRIMARY KEY,
@@ -18,7 +18,7 @@ CREATE TABLE forums (
 CREATE INDEX ON forums USING hash (slug);
 
 CREATE TABLE users (
-    ID          SERIAL  UNIQUE,
+    id          SERIAL  UNIQUE,
     nickname    CITEXT  NOT NULL PRIMARY KEY,
     fullname    TEXT    NOT NULL,
     about       TEXT    NOT NULL
@@ -28,7 +28,7 @@ CREATE TABLE users (
 CREATE INDEX ON users(nickname, email);
 
 CREATE TABLE forum_users (
-  userID              INT REFERENCES users(ID),
+  userId              INT REFERENCES users(id),
   forumSlug CITEXT    NOT NULL,
   username CITEXT     NOT NULL,
   CONSTRAINT forum_users_username_forumSlug UNIQUE(forumSlug, username)
@@ -153,8 +153,8 @@ CREATE TRIGGER threads_forum_counter AFTER INSERT ON threads FOR EACH ROW EXECUT
 CREATE OR REPLACE FUNCTION insert_forum_user()
   RETURNS TRIGGER AS $insert_forum_user$
     BEGIN
-      INSERT INTO forum_users(userID, forumSlug, username) VALUES
-        ((SELECT ID FROM users WHERE users.nickname = NEW.author), New.forum, NEW.author) ON CONFLICT DO NOTHING;
+      INSERT INTO forum_users(userd, forumSlug, username) VALUES
+        ((SELECT id FROM users WHERE users.nickname = NEW.author), New.forum, NEW.author) ON CONFLICT DO NOTHING;
     return NULL;
     END;
     $insert_forum_user$ LANGUAGE plpgsql;

@@ -1,16 +1,4 @@
-type CodeType = {
-    OK: Number,
-    CREATED: Number,
-    NOT_FOUND: Number,
-    ALREADY_EXISTS: Number,
-    INTERNAL_ERROR: Number,
-};
-
-type DBCodes = {
-    NOT_NULL: string,
-    DONT_EXIST: string,
-    ALREADY_EXIST: string,
-};
+import { CodeType, DBCodes } from "./types";
 
 export const codes: CodeType = {
     OK: 200,
