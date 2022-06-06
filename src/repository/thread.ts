@@ -14,7 +14,7 @@ export default new class ThreadRepository {
 
     getAllThreadsBySlug(slug: string) {
         return db.one({
-            text: `SELECT * FROM threads WHERE slug=$$${slug}$$`;
+            text: `SELECT * FROM threads WHERE slug=$$${slug}$$`,
         });
     };
 
