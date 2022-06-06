@@ -9,7 +9,7 @@ type CodeType = {
 type DBCodes = {
     NOT_NULL: string,
     DONT_EXIST: string,
-    ALREADI_EXIST: string,
+    ALREADY_EXIST: string,
 };
 
 export const codes: CodeType = {
@@ -23,5 +23,5 @@ export const codes: CodeType = {
 export const dbCodes: DBCodes = {
     NOT_NULL: "23502",
     DONT_EXIST: "23503",
-    ALREADI_EXIST: "23505",
+    ALREADY_EXIST: "23505",
 };
