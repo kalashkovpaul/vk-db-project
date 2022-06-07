@@ -1,5 +1,5 @@
-import { codes, dbCodes } from "../consts";
-import UserRepository from "../repository/user";
+import { codes, dbCodes } from "../consts.js";
+import UserRepository from "../repository/user.js";
 
 export default new class UserDelivery {
     async create(request, reply) {

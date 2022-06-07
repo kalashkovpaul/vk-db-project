@@ -1,5 +1,5 @@
-import { codes } from "../consts";
-import ServiceRepository from "../repository/service";
+import { codes } from "../consts.js";
+import ServiceRepository from "../repository/service.js";
 
 export default new class ServiceDelivery {
     async status(request, reply) {

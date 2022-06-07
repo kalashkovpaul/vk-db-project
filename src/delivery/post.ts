@@ -1,4 +1,4 @@
-import { codes, dbCodes } from '../consts'
+import { codes, dbCodes } from '../consts.js'
 import PostRepository from '../repository/post.js';
 import ForumRepository from '../repository/forum.js';
 

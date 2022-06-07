@@ -1,7 +1,7 @@
-import { codes, dbCodes } from "../consts";
-import ThreadRepository from "../repository/thread";
-import ForumRepository from "../repository/forum";
-import PostRepository from "../repository/post";
+import { codes, dbCodes } from "../consts.js";
+import ThreadRepository from "../repository/thread.js";
+import ForumRepository from "../repository/forum.js";
+import PostRepository from "../repository/post.js";
 
 export default new class ThreadsDelivery {
     async createThread(request, reply) {

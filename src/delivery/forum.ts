@@ -1,5 +1,5 @@
-import { codes, dbCodes} from "../consts";
-import ForumRepository from "../repository/forum";
+import { codes, dbCodes} from "../consts.js";
+import ForumRepository from "../repository/forum.js";
 
 export default new class ForumDelivery {
     async create(request, reply) { // TODO: types

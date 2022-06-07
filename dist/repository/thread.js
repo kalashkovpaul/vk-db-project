@@ -1,30 +1,28 @@
 import { db } from "../db.js";
-
 export default new class ThreadRepository {
-    create(author: string, created: string, forum: string, message: string, title: string, slug: string) {
+    create(author, created, forum, message, title, slug) {
         let text = ` INSERT INTO threads (author, created, forum, message, title, slug)`;
         text += `VALUES ((SELECT nickname FROM users WHERE nickname=$$${author}$$), $1, (SELECT slug FROM forums WHERE slug=$2),
         $$${message}$$, $$${title}$$, $3) RETURNING author, created, forum, message, title, votes, id ${slug ? ', slug' : ''}`;
-            
         return db.one({
             text: text,
             values: [created, forum, slug],
         });
-    };
-
-    getAllThreadsBySlug(slug: string) {
+    }
+    ;
+    getAllThreadsBySlug(slug) {
         return db.one({
             text: `SELECT * FROM threads WHERE slug=$$${slug}$$`,
         });
-    };
-
-    getAllThreadsIDsBySlug(slug: string) {
+    }
+    ;
+    getAllThreadsIDsBySlug(slug) {
         return db.one({
             text: `SELECT id FROM threads WHERE slug=$$${slug}$$`,
-        }); 
-    };
-
-    getInfoBySlug(slug: number) {
+        });
+    }
+    ;
+    getInfoBySlug(slug) {
         let res = 'slug = $1';
         if (!isNaN(slug)) {
             res = ' id = $1';
@@ -34,46 +32,44 @@ export default new class ThreadRepository {
             WHERE ${res}`,
             values: [slug],
         });
-    };
-
-    getAllThreadsByID(id: string) {
+    }
+    ;
+    getAllThreadsByID(id) {
         return db.one({
             text: 'SELECT threads.id FROM threads WHERE threads.id = $1',
             values: [id],
         });
     }
-
-    getAllThreads(desc: string, limit: string, since: string, slug: string) {
+    getAllThreads(desc, limit, since, slug) {
         let sortArguments = "", limitArguments = "", sinceArguments = "";
-
         if (since) {
             if (desc === 'true') {
                 sinceArguments = `AND created <= '${since}'`;
                 sortArguments = 'DESC';
-            } else {
+            }
+            else {
                 sinceArguments = `AND created >= '${since}'`;
                 sortArguments = 'ASC';
             }
-        } else {
+        }
+        else {
             sinceArguments = '';
             if (desc === 'true') {
                 sortArguments = 'DESC';
-            } else {
+            }
+            else {
                 sortArguments = 'ASC';
             }
         }
-
         if (limit) {
             limitArguments = `LIMIT ${limit}`;
         }
-
         return db.any({
             text: `SELECT * FROM threads WHERE forum=$1 ${sinceArguments} ORDER BY created ${sortArguments} ${limit ? limitArguments : ''};`,
             values: [slug]
         });
     }
-
-    update(title: string, message: string, slug: number) {
+    update(title, message, slug) {
         let text = "";
         const args = [];
         let countArgs = 1;
@@ -83,10 +79,12 @@ export default new class ThreadRepository {
             forum FROM threads WHERE `;
             if (!isNaN(slug)) {
                 text += 'id = $1';
-            } else {
+            }
+            else {
                 text += 'slug = $1';
             }
-        } else {
+        }
+        else {
             text = 'UPDATE threads SET ';
             if (title != undefined) {
                 text += `title = $${countArgs++},`;
@@ -99,16 +97,17 @@ export default new class ThreadRepository {
             text = text.slice(0, -1);
             if (!isNaN(slug)) {
                 text += ` WHERE id = $${countArgs++} `;
-            } else {
+            }
+            else {
                 text += ` WHERE slug = $${countArgs++} `;
             }
             text += ` RETURNING created, id, title, slug, message, author, forum`;
         }
         args.push(slug);
-
         return db.one({
             text: text,
             values: args,
         });
     }
 };
+//# sourceMappingURL=thread.js.map

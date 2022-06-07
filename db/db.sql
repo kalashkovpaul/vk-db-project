@@ -21,8 +21,8 @@ CREATE TABLE users (
     id          SERIAL  UNIQUE,
     nickname    CITEXT  NOT NULL PRIMARY KEY,
     fullname    TEXT    NOT NULL,
-    about       TEXT    NOT NULL
-    email       CITEXT  NOT NULL UNIQUE,
+    about       TEXT    NOT NULL,
+    email       CITEXT  NOT NULL UNIQUE
 );
 
 CREATE INDEX ON users(nickname, email);
@@ -67,8 +67,8 @@ CREATE TABLE posts (
     edited      BOOLEAN     DEFAULT FALSE,
     forum       CITEXT      NOT NULL,
     thread_id   INT         NOT NULL,
-    created  TIMESTAMP WITH TIME ZONE DEFAULT now()
-    path        INTEGER ARRAY,
+    created  TIMESTAMP WITH TIME ZONE DEFAULT now(),
+    path        INTEGER ARRAY
 );
 
 CREATE INDEX ON posts(thread_id, created, id);
@@ -153,7 +153,7 @@ CREATE TRIGGER threads_forum_counter AFTER INSERT ON threads FOR EACH ROW EXECUT
 CREATE OR REPLACE FUNCTION insert_forum_user()
   RETURNS TRIGGER AS $insert_forum_user$
     BEGIN
-      INSERT INTO forum_users(userd, forumSlug, username) VALUES
+      INSERT INTO forum_users(userId, forumSlug, username) VALUES
         ((SELECT id FROM users WHERE users.nickname = NEW.author), New.forum, NEW.author) ON CONFLICT DO NOTHING;
     return NULL;
     END;

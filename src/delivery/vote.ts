@@ -1,5 +1,5 @@
-import { codes } from '../consts';
-import VoteRepository from '../repository/vote'
+import { codes } from '../consts.js';
+import VoteRepository from '../repository/vote.js'
 
 
 export default new class VotesDelivery {

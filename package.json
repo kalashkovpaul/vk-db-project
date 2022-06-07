@@ -2,17 +2,27 @@
   "dependencies": {
     "pg-promise": "^10.11.1"
   },
+  "type": "module",
   "name": "vk-db-project",
   "description": "DB Project for VK Education",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "dest/api.js",
   "devDependencies": {
+    "@types/morgan": "^1.7.35",
+    "@types/pg": "^7.4.14",
+    "@types/express": "^4.16.1",
+    "ts-node-dev": "^1.0.0-pre.32",
     "fastify": "^3.25.3",
     "pg-promise": "^10.11.1",
     "typescript": "^4.7.3"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "tsc": "tsc -b ./tsconfig.json",
+    "start": "tsc && node ./dist/api.js",
+    "dev": "ts-node-dev --respawn --transpileOnly ./src/api.ts",
+    "prod": "tsc && node ./dist/api.js",
+    "lint": "tslint 'src/**/*.ts'"
   },
   "repository": {
     "type": "git",
