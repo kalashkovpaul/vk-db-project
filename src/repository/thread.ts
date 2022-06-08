@@ -25,10 +25,7 @@ export default new class ThreadRepository {
     };
 
     getInfoBySlug(slug: number) {
-        let res = 'slug = $1';
-        if (!isNaN(slug)) {
-            res = ' id = $1';
-        }
+        const res = (!isNaN(slug) ? ' id = $1' : 'slug = $1');
         return db.one({
             text: `SELECT author, created, forum, id, message, votes, slug, title FROM threads 
             WHERE ${res}`,
@@ -68,7 +65,8 @@ export default new class ThreadRepository {
         }
 
         return db.any({
-            text: `SELECT * FROM threads WHERE forum=$1 ${sinceArguments} ORDER BY created ${sortArguments} ${limit ? limitArguments : ''};`,
+            text: `SELECT * FROM threads WHERE forum=$1 ${sinceArguments} ORDER BY created 
+                ${sortArguments} ${limit ? limitArguments : ''};`,
             values: [slug]
         });
     }
@@ -81,11 +79,12 @@ export default new class ThreadRepository {
             text = `SELECT created, id, title,
             slug, message, author,
             forum FROM threads WHERE `;
-            if (!isNaN(slug)) {
-                text += 'id = $1';
-            } else {
-                text += 'slug = $1';
-            }
+            text += (!isNaN(slug) ? 'id = $1' : 'slug = $1');
+            // if (!isNaN(slug)) {
+            //     text += 'id = $1';
+            // } else {
+            //     text += 'slug = $1';
+            // }
         } else {
             text = 'UPDATE threads SET ';
             if (title != undefined) {
@@ -97,15 +96,15 @@ export default new class ThreadRepository {
                 args.push(message);
             }
             text = text.slice(0, -1);
-            if (!isNaN(slug)) {
-                text += ` WHERE id = $${countArgs++} `;
-            } else {
-                text += ` WHERE slug = $${countArgs++} `;
-            }
+            text += (!isNaN(slug) ? ` WHERE id = $${countArgs++} ` : ` WHERE slug = $${countArgs++} `);
+            // if (!isNaN(slug)) {
+            //     text += ` WHERE id = $${countArgs++} `;
+            // } else {
+            //     text += ` WHERE slug = $${countArgs++} `;
+            // }
             text += ` RETURNING created, id, title, slug, message, author, forum`;
         }
         args.push(slug);
-
         return db.one({
             text: text,
             values: args,

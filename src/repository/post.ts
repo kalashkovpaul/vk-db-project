@@ -22,7 +22,7 @@ export default new class PostRepository {
         text += ' RETURNING author, id, created, thread_id AS thread, parent_id AS parent, forum, message';
         return db.any({
             text: text, 
-            values: args
+            values: args,
         });
     };
 
@@ -35,7 +35,7 @@ export default new class PostRepository {
 
     update(message: string, ID: string) {
         const args = [];
-        let text;
+        let text = "";
         
         if (message == undefined) {
             text = 'SELECT id, author, message, created, forum, thread_id AS thread FROM posts WHERE id=$1';
@@ -45,7 +45,6 @@ export default new class PostRepository {
             args.push(message);
         }
         args.push(ID);
-
         return db.one({
             text: text, 
             values: args
@@ -96,10 +95,9 @@ export default new class PostRepository {
         let args = [ID];
         let i = 2;
         let flag = false;
-        text = `
-        SELECT id, thread_id AS thread, created,
-        message, parent_id AS parent, author, forum FROM
-        (SELECT * FROM posts WHERE thread_id = $1 `;
+        text = `SELECT id, thread_id AS thread, created,
+                message, parent_id AS parent, author, forum FROM
+                (SELECT * FROM posts WHERE thread_id = $1 `;
         if (desc === 'true') {
             flag = true;
         }
@@ -125,7 +123,6 @@ export default new class PostRepository {
     };
 
     getPostsByIDTree(limit: string, since: string, desc: string, ID: string) {
-        let text = "";
         let args = [ID];
         let i = 2;
         const descQuery = desc === 'true' ? 'DESC' : '';
@@ -143,7 +140,7 @@ export default new class PostRepository {
             args.push(limit);
         }
 
-        text = `
+        const text = `
         SELECT id, author, created, message, parent_id AS parent,
         forum, thread_id AS thread
         FROM posts
@@ -154,12 +151,11 @@ export default new class PostRepository {
     };
 
     getPostsByIDParent(limit: string, since: string, desc: string, ID: string) {
-        let text = `
-        SELECT author, created, forum, id, edited,
-        message, parent_id AS parent, thread_id AS thread
-        FROM posts
-        WHERE path[1] IN (
-        SELECT id FROM posts`;
+        let text = `SELECT author, created, forum, id, edited,
+                    message, parent_id AS parent, thread_id AS thread
+                    FROM posts
+                    WHERE path[1] IN (
+                    SELECT id FROM posts`;
         let args = [ID];
         let i = 2;
         const descQuery = desc === 'true' ? 'DESC' : '';
@@ -179,14 +175,12 @@ export default new class PostRepository {
             limitSql = `LIMIT $${i++}`;
             args.push(limit);
         }
-
         text += ` WHERE thread_id=$1 AND parent_id IS NULL
         ${sinceQuery}
         ORDER BY id ${descQuery}
         ${limitSql})`
         text += ` AND thread_id=$1
         ORDER BY path[1] ${descQuery}, path`;
-
         return db.any({text: text, values: args});
     };
 };
