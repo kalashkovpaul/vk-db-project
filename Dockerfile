@@ -39,4 +39,4 @@ EXPOSE 5000
 
 ENV PGPASSWORD technopark
 
-CMD service postgresql start && psql -h localhost -d technopark -U technopark -p 4001 -a -q -f ./db/db.sql && npm run start
+CMD service postgresql start && psql -h localhost -d technopark -U technopark -p 5432 -a -q -f ./db/db.sql && npm run start
