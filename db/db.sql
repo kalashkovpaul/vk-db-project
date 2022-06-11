@@ -79,7 +79,7 @@ CREATE TABLE IF NOT EXISTS votes (
   CONSTRAINT votes_user_thread_unique UNIQUE (user_id, thread_id)
 );
 
--- счетчик воутов
+-- vote couner
 CREATE OR REPLACE FUNCTION vote_insert()
   RETURNS TRIGGER AS $vote_insert$
     BEGIN
@@ -93,7 +93,7 @@ $vote_insert$  LANGUAGE plpgsql;
 DROP TRIGGER IF EXISTS vote_insert ON votes;
 CREATE TRIGGER vote_insert AFTER INSERT ON votes FOR EACH ROW EXECUTE PROCEDURE vote_insert();
 
--- изменение воута
+-- vote editing
 CREATE OR REPLACE FUNCTION vote_update() RETURNS TRIGGER AS $vote_update$
 BEGIN
   IF OLD.voice = NEW.voice
@@ -111,7 +111,7 @@ $vote_update$ LANGUAGE  plpgsql;
 DROP TRIGGER IF EXISTS vote_update ON votes;
 CREATE TRIGGER vote_update AFTER UPDATE ON votes FOR EACH ROW EXECUTE PROCEDURE vote_update();
 
--- путь поста и проверка на родителя
+-- post path and parent check
 CREATE OR REPLACE FUNCTION path() RETURNS TRIGGER AS $path$
     DECLARE
         parent_path INT[];
@@ -136,7 +136,7 @@ $path$ LANGUAGE  plpgsql;
 DROP TRIGGER IF EXISTS path_trigger ON posts;
 CREATE TRIGGER path_trigger BEFORE INSERT ON posts FOR EACH ROW EXECUTE PROCEDURE path();
 
--- счетчик тредов в форуме
+--  forum thread counter
 CREATE OR REPLACE FUNCTION threads_forum_counter()
   RETURNS TRIGGER AS $threads_forum_counter$
     BEGIN
